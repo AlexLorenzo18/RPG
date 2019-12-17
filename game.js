@@ -45,15 +45,18 @@ class Personnage {
 
 }
 
-const principal = new Personnage("Pitch", 150, 25);
+let username = prompt("Quel est ton nom ?");
+const principal = new Personnage(username, 150, 25);
 const mechantporte = new Personnage("Pyjaman", 45, 20);
-const elfe = new Personnage("monstre2", 80, 20);
+const chien = new Personnage("Chien", 80, 20);
 const boss = new Personnage("boss", 8000, 2000, 2000);
+
 
 const textElement = document.getElementById("text")
 const boutonsOptionsElement = document.getElementById("boutons")
 
 let state = {}
+
 
 function startGame() {
   state = {}
@@ -146,6 +149,7 @@ function selectOption(option) {
     return startGame()
   }
 
+
   Do()
 
   function Do(){
@@ -157,6 +161,7 @@ function selectOption(option) {
 }
 
 
+
 //setState: { blueGoo: true },
 //requiredState: (currentState) => currentState.blueGoo,
 
@@ -164,7 +169,7 @@ function selectOption(option) {
  textTests = [
   {
     id: 1,
-    text: "SALUT SALUT ! Je vous ai concocté une petite histoire de 10 embranchement comme vous l'aviez demandé. \n Dans cette histoire, vous jouez Pitch, une héroine qui doit aller au bout de sa mission pour récupérer les joyaux que Growser a volé",
+    text: "SALUT SALUT ! Je vous ai concocté une petite histoire de 10 embranchement comme vous l'aviez demandé. \n Dans cette histoire, vous jouez " + username + ", une héroine qui doit aller au bout de sa mission pour récupérer les joyaux que Growser a volé",
     options: [
       {
         text: 'Lancer la partie',
@@ -175,7 +180,7 @@ function selectOption(option) {
 
   {
     id: 2,
-    text: "Hello Pitch, je me présente je suis la fée qui t'accompagnera dans ce château, je le connais comme ma poche, nous y sommes déjà allées avec des potes, me demande pas pourquoi on était bleues. \n \n Il y a 2 entrées, par la porte d'entrée mais bon on risque de se faire repérer, ou alors par l'arrière il y a une petite trappe dans une cabane.",
+    text: "Hello " + username + ", je me présente je suis la fée qui t'accompagnera dans ce château, je le connais comme ma poche, nous y sommes déjà allées avec des potes, me demande pas pourquoi on était bleues. \n \n Il y a 2 entrées, par la porte d'entrée mais bon on risque de se faire repérer, ou alors par l'arrière il y a une petite trappe dans une cabane.",
     options: [
       {
         text: "Se diriger vers la porte d'entrée",
@@ -256,6 +261,5 @@ function selectOption(option) {
 
 ]
 
-
-
 startGame()
+
