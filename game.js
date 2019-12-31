@@ -8,8 +8,8 @@ class Personnage {
  
   principalattaque(cible) {
     if (this.sante > 0) {
-      const degats = this.force;
-      cible.sante -= degats;
+
+      cible.sante -= this.force;
 
       if (cible.sante > 0) {
         document.getElementById("txtcombat").innerHTML = (`${cible.nom} a encore ${cible.sante} points de vie`);
@@ -24,13 +24,14 @@ class Personnage {
       }
       
     } 
-    
+
   }
 
   mechantattaque(cible) {
+
     if (this.sante > 0) {
-      const degats = this.force;
-      cible.sante -= degats;
+
+      cible.sante -= this.force;
 
       if (cible.sante > 0) {
         document.getElementById("combat").innerHTML = (`${cible.nom} a encore ${cible.sante} points de vie`);
@@ -40,96 +41,135 @@ class Personnage {
   }
 
   stat() {
-    document.getElementById("stat").innerHTML = (`${this.nom} a ${this.sante} points de vie, ${this.force} en force et ${this.xp} points d'expérience`);
+    document.getElementById("stat").innerHTML = (`${this.nom} a ${this.sante}/250 points de vie , ${this.force} en force et ${this.xp} points d'expérience`);
   };
+
+  potion() {
+    const potion = 200;
+    this.sante += potion;
+
+  } 
 
 }
 
 let username = prompt("Quel est ton nom ?");
-const principal = new Personnage(username, 150, 25);
-const mechantporte = new Personnage("Pyjaman", 45, 20);
-const chien = new Personnage("Chien", 80, 20);
-const boss = new Personnage("boss", 8000, 2000, 2000);
+const principal = new Personnage(username, 250, 40);
+const mechantporte = new Personnage("Pyjaman", 200, 20);
+const chien = new Personnage("Chien", 220, 60);
+const boss = new Personnage("boss", 8000, 2000);
 
+const textElement = document.getElementById("text");
+const boutonsOptionsElement = document.getElementById("boutons");
 
-const textElement = document.getElementById("text")
-const boutonsOptionsElement = document.getElementById("boutons")
-
-let state = {}
-
+let state = {};
 
 function startGame() {
-  state = {}
-  showtextTest(1)
+  state = {};
+  showtextTest(1);
 }
 
 function showtextTest(textTable) {
-  const textTest = textTests.find(textTest => textTest.id === textTable)
-  textElement.innerText = textTest.text
+  const textTest = textTests.find(textTest => textTest.id === textTable);
+  textElement.innerText = textTest.text;
   while (boutonsOptionsElement.firstChild) {
-    boutonsOptionsElement.removeChild(boutonsOptionsElement.firstChild)
+    boutonsOptionsElement.removeChild(boutonsOptionsElement.firstChild);
   }
 
   textTest.options.forEach(option => {
     if (showOption(option)) {
-      const button = document.createElement("button")
-      button.innerText = option.text
-      button.classList.add("btn")
-      button.addEventListener("click", () => selectOption(option))
-      boutonsOptionsElement.appendChild(button)
+      const button = document.createElement("button");
+      button.innerText = option.text;
+      button.classList.add("btn");
+      button.addEventListener("click", () => selectOption(option));
+      boutonsOptionsElement.appendChild(button);
     }
   })
 }
 
 function showOption(option) {
-  return option.requiredState == null || option.requiredState(state)
+  return option.requiredState == null || option.requiredState(state);
 }
 
 function selectOption(option) {
-  let nexttextTestId = option.nextText
+
+  let nexttextTestId = option.nextText;
+
+  if (nexttextTestId == 22) {
+    principal.potion()
+    chien.mechantattaque(principal);
+    Do(nexttextTestId = 17);
+    
+  }
+
+  if (nexttextTestId == 23) {
+    principal.potion()
+    chien.mechantattaque(principal);
+    Do(nexttextTestId = 20);
+    
+  }
 
   if (nexttextTestId) {
     document.getElementById("stat").style.display = "none";
   }
 
-  if (nexttextTestId == -3) {
-    gentil.principalattaque(orc);
-    if (orc.sante <= 0) {
-      Do(nexttextTestId = 3);
-    } 
-    return;
-    
-  }
+// ATTAQUE PORTE
 
   if (nexttextTestId == -1) {
     principal.principalattaque(mechantporte);
     if (mechantporte.sante <= 0) {
       Do(nexttextTestId = 6);
-      document.getElementById("combat").style.display = "none";
-      document.getElementById("txtcombat").style.display = "none";
+        document.getElementById("combat").style.display = "none";
+        document.getElementById("txtcombat").style.display = "none";
     } else {
       mechantporte.mechantattaque(principal);
     }
-    return;
+  return;
+  }
+
+
+  // ATTAQUE CHIEN
+
+  if (nexttextTestId == -2) {
+    principal.principalattaque(chien);
+    document.getElementById("combat").style.display = "block";
+    document.getElementById("txtcombat").style.display = "block";
+
+    if (principal.sante <= 0) {
+      Do(nexttextTestId = 16);
+      document.getElementById("combat").style.display = "none";
+      document.getElementById("txtcombat").style.display = "none";
+    }
     
+    if (chien.sante <= 0) {
+      Do(nexttextTestId = 12);
+        document.getElementById("combat").style.display = "none";
+        document.getElementById("txtcombat").style.display = "none";
+     
+     
+      } else {
+      chien.mechantattaque(principal);
+    }
+  return;
   }
 
   if (nexttextTestId == -8) {
     gentil.attaquer(boss);
     boss.attaquer(gentil);
-    return;
+  return;
 
   } 
 
   if (nexttextTestId == -4) {
     document.getElementById("stat").style.display = "block"; 
     principal.stat();
-    return;
+  return;
 
   } 
 
   if (nexttextTestId == 5){
     principal.sante = principal.sante - 20;
+    document.getElementById("stat").style.display = "block"; 
+    principal.stat();
   }
 
   if (nexttextTestId == 3) {
@@ -144,32 +184,26 @@ function selectOption(option) {
     document.body.background = "chateausombre.jpg";
   }
 
-
-  if (nexttextTestId <= 0) {
-    return startGame()
+  if (nexttextTestId == 0) {
+    location.reload();
   }
 
-
-  Do()
+  Do();
 
   function Do(){
 
-    state = Object.assign(state, option.setState)
-    showtextTest(nexttextTestId)
+    state = Object.assign(state, option.setState);
+    showtextTest(nexttextTestId);
   }
 
 }
 
 
 
-//setState: { blueGoo: true },
-//requiredState: (currentState) => currentState.blueGoo,
-
-
  textTests = [
   {
     id: 1,
-    text: "SALUT SALUT ! Je vous ai concocté une petite histoire de 10 embranchement comme vous l'aviez demandé. \n Dans cette histoire, vous jouez " + username + ", une héroine qui doit aller au bout de sa mission pour récupérer les joyaux que Growser a volé",
+    text: "SALUT SALUT ! Je vous ai concocté une petite histoire de 10 embranchement comme vous l'aviez demandé. \n Dans cette histoire, vous jouez " + username + ", une héroine qui doit aller au bout de sa mission pour récupérer les joyaux que Growser a volé \n\n Se battre vous rapporte de l'XP et de la force.\n Vous aurez toujours l'initiative dans un combat.",
     options: [
       {
         text: 'Lancer la partie',
@@ -188,8 +222,8 @@ function selectOption(option) {
       },
 
       {
-        text: "Se diriger vers la cabane",
-        nextText: 4
+        text: "Se diriger vers la fenêtre arrière",
+        nextText: 7
       }
     ]
   },
@@ -245,12 +279,12 @@ function selectOption(option) {
     options: [
       {
         text: "Partir à l'étage sans les clés",
-        nextText: 7
+        nextText: 9
       },
       {
         text: "Prendre les clés et partir à l'étage",
         setState: { clés: true },
-        nextText: 7 
+        nextText: 8
       },
       {
         text: "Statistique",
@@ -258,8 +292,188 @@ function selectOption(option) {
       },
     ]
   },
+  {
+    id: 7,
+    text: "Vous êtes devant la fenêtre, elle est verrouillée.",
+    options: [
+      {
+        text: "Casser",
+        nextText: 5
+      },
+      {
+        text: "Aller à la porte d'entrée",
+        nextText: 3
+      },
+      {
+        text: "Statistique",
+        nextText: -4
+      },
+    ]
+  },
+  {
+    id: 8,
+    text: "Vous rentrez dans une chambre. L'aboiement se rapproche.\n\n Le temps presse.",
+    options: [
+      {
+        text: "Se cacher sous le lit, vous trouvez une bouteille de Cherry",
+        nextText: 10,
+      },
+      {
+        text: "Se cacher dans l'armoire verrouillée. Vous trouvez une bouteille de Cherry",
+        nextText: 11,
+        requiredState: (currentState) => currentState.clés,
+      },
+    ]
+  },
+  {
+    id: 9,
+    text: "Vous rentrez dans une chambre. L'aboiement se rapproche.\n\n Le temps presse.",
+    options: [
+      {
+        text: "Se cacher sous le lit",
+        nextText: 10
+      },
+      {
+        text: "Vous n'avez pas la clé pour l'armoire",
+      },
+    ]
+  },
+  {
+    id: 10,
+    text: "Vous vous glissez sous le lit mais l'odorat du monstre vous repère. \n\n La fée vous donne une bouteille qui contient un liquide noirâtre marqué d'un étiquette 'Cherry', la boire pourra peut être vous aider lors du combat",
+    options: [
+      {
+        text: "Frapper",
+        nextText: -2
+      },
+      {
+        text: "Boire le Cherry",
+        nextText: 23,
+      },
+      {
+        text: "Statistique",
+        nextText: -4,
+      },
+    ]
+  },
+  {
+    id: 20,
+    text: "Vous vous glissez sous le lit mais l'odorat du monstre vous repère. \n\n La fée vous donne une bouteille qui contient un liquide noirâtre marqué d'un étiquette 'Cherry', la boire pourra peut être vous aider lors du combat",
+    options: [
+      {
+        text: "Frapper",
+        nextText: -2
+      },
+      {
+        text: "Statistique",
+        nextText: -4,
+      },
+    ]
+  },
+
+  {
+    id: 11,
+    text: "Vous ouvrez l'armoire avec la clé, vous y rentrez et vous vous sentez en sécurité.",
+    options: [
+      {
+        text: "Sortir et affronter le monstre",
+        nextText: 15
+      },
+      {
+        text: "Attendre",
+        nextText: 12,
+      },
+    ]
+  },
+  {
+    id: 12,
+    text: "Le monstre est distrait par une lumière à la fenêtre ! C'est l'occasion de fuir !",
+    options: [
+      {
+        text: "Fuir dans le couloir à gauche",
+        nextText: 13
+      },
+      {
+        text: "Fuir dans le couloir à droite",
+        nextText: 14
+      },
+    ]
+  },
+  {
+    id: 13,
+    text: "Vous rentrez dans une salle qui semble être une cuisine IKEA. \n Au fond, les joyaux dans une boite Harybeau.",
+    options: [
+      {
+        text: "Prendre les joyaux et partir en courant !",
+        nextText: 99
+      },
+    ]
+  },
+  {
+    id: 14,
+    text: "Vous rentrez dans une salle qui semble être une salle de bain. \n Vous croisez le regard d'une dame se démaquillant. \n\n Elle vous attrape et vous ramène chez vos parents. \n\n Fini les sorties.",
+    options: [
+      {
+        text: "Recommencer",
+        nextText: 0
+      },
+    ]
+  },
+  {
+    id: 15,
+    text: "Vous sortez pour affronter le monstre. \n\n La fée vous donne une bouteille qui contient un liquide noirâtre marqué d'un étiquette 'Cherry', la boire pourra peut être vous aider lors du combat",
+    options: [
+      {
+        text: "Frapper",
+        nextText: -2
+      },
+      {
+        text: "Boire le Cherry",
+        nextText: 22,
+      },
+      {
+        text: "Statistique",
+        nextText: -4,
+      },
+    ]
+  },
+  {
+    id: 17,
+    text: "Vous sortez pour affronter le monstre. \n\n La fée vous donne une bouteille qui contient un liquide noirâtre marqué d'un étiquette 'Cherry', la boire pourra peut être vous aider lors du combat",
+    options: [
+      {
+        text: "Frapper",
+        nextText: -2
+      },
+      {
+        text: "Statistique",
+        nextText: -4,
+      },
+    ]
+  },
+  {
+    id: 16,
+    text: "Le chiot aboie et alerte une dame. \n\n Elle vous attrape et vous ramène chez vos parents. \n\n Fini les sorties.",
+    options: [
+      {
+        text: "Recommencer",
+        nextText: 0
+      },
+      
+    ]
+  },
+  {
+    id: 99,
+    text: "Vous rentrez chez vous sain et sauf. Vous allez manger vos bonbons au fond de votre couette. \n\n Félicitations.",
+    options: [
+      {
+        text: "Recommencer",
+        nextText: 0
+      },
+    ]
+  },
 
 ]
 
-startGame()
+startGame();
 
