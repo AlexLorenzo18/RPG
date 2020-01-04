@@ -18,7 +18,7 @@ class Personnage {
       else {
         cible.sante = 0;
         const bonusXP = 10;
-        const bonusFORCE = 5;
+        const bonusFORCE = 20;
         this.xp += bonusXP;
         this.force +=bonusFORCE;
       }
@@ -120,6 +120,7 @@ function selectOption(option) {
       Do(nexttextTestId = 6);
         document.getElementById("combat").style.display = "none";
         document.getElementById("txtcombat").style.display = "none";
+        document.body.background = "pyjama.jpg";
     } else {
       mechantporte.mechantattaque(principal);
     }
@@ -182,6 +183,22 @@ function selectOption(option) {
   
   if (nexttextTestId == 2) {
     document.body.background = "chateausombre.jpg";
+  }
+
+  if (nexttextTestId == 7) {
+    document.body.background = "fenetre.jpg";
+  }
+
+  if (nexttextTestId == 5) {
+    document.body.background = "fenetrecasse.jpg";
+  }
+
+  if (nexttextTestId == 9) {
+    document.body.background = "chambre.jpg";
+  }
+
+  if (nexttextTestId == 8) {
+    document.body.background = "chambre.jpg";
   }
 
   if (nexttextTestId == 0) {
