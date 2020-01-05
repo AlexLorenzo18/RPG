@@ -332,11 +332,11 @@ function selectOption(option) {
     text: "Vous rentrez dans une chambre. L'aboiement se rapproche.\n\n Le temps presse.",
     options: [
       {
-        text: "Se cacher sous le lit, vous trouvez une bouteille de Cherry",
+        text: "Se cacher sous le lit",
         nextText: 10,
       },
       {
-        text: "Se cacher dans l'armoire verrouillée. Vous trouvez une bouteille de Cherry",
+        text: "Se cacher dans l'armoire verrouillée.",
         nextText: 11,
         requiredState: (currentState) => currentState.clés,
       },
