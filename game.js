@@ -246,7 +246,7 @@ function selectOption(option) {
   },
   {
     id: 3,
-    text: "Vous arrivez devant une porte entrée en verre, on peut y voir à l'intérieur et il n'y a rien. La porte fait au moins 5 fois votre taille sachant que vous faites 1m60, c'est grand.",
+    text: "Vous arrivez devant une porte d'entrée en verre, on peut y voir à l'intérieur et il n'y a rien. La porte fait au moins 5 fois votre taille sachant que vous faites 1m60, c'est grand.",
     options: [
       {
         text: "Sonner comme une voisine exemplaire",
